@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelves &amp; Boxes — Storage Safety</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #eaeff4;
+  color: #1a2634;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24px 16px 48px;
+}
+.page-header { text-align: center; max-width: 660px; margin-bottom: 32px; }
+.page-header .badge {
+  display: inline-block; font-size: 11px; letter-spacing: 2.5px;
+  text-transform: uppercase; color: #fff; background: #0d3b66;
+  padding: 5px 16px; border-radius: 20px; margin-bottom: 12px;
+}
+.page-header h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(28px, 5vw, 40px); font-weight: 400;
+  color: #0d3b66; line-height: 1.15; margin-bottom: 6px;
+}
+.page-header .subtitle { font-size: 16px; color: #5a7a94; font-style: italic; }
+
+/* POSTER */
+.poster {
+  background: #fff; border-radius: 16px; border: 1px solid #d0dbe6;
+  max-width: 660px; width: 100%; overflow: hidden; margin-bottom: 36px;
+}
+.poster-banner { background: #0d3b66; padding: 26px 28px 22px; text-align: center; }
+.poster-banner h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 4px; }
+.poster-banner p { font-size: 15px; color: #8ec8f0; font-style: italic; }
+.tips { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.tip { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: #f6fafe; border-radius: 10px; border: 1px solid #e4eef6; }
+.tip-num { min-width: 30px; height: 30px; border-radius: 50%; background: #0F6E56; color: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+.tip-title { font-size: 14px; font-weight: 600; color: #0d3b66; margin-bottom: 2px; }
+.tip-desc { font-size: 12px; color: #5a7a94; line-height: 1.5; }
+
+/* GAME */
+.game-section {
+  background: #fff; border-radius: 16px; border: 1px solid #d0dbe6;
+  max-width: 660px; width: 100%; padding: 28px 24px;
+}
+.game-header { text-align: center; margin-bottom: 20px; }
+.game-header h2 { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; font-weight: 400; color: #0d3b66; margin-bottom: 4px; }
+.game-header p { font-size: 13px; color: #5a7a94; }
+.score-bar { display: flex; justify-content: center; gap: 28px; margin-bottom: 18px; font-size: 13px; color: #5a7a94; }
+.score-bar strong { color: #0d3b66; font-weight: 600; }
+.game-area { display: flex; gap: 20px; align-items: flex-start; }
+@media (max-width: 580px) {
+  .game-area { flex-direction: column-reverse; }
+  .box-pool { flex-direction: row !important; flex-wrap: wrap; width: 100% !important; }
+  .box-pool .box-item { flex: 1 1 calc(50% - 6px); min-width: 140px; }
+}
+
+/* SHELF */
+.shelf-outer { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.shelf-unit {
+  width: 100%; position: relative;
+  background: #ece5d8;
+  border-left: 7px solid #7a7a7a;
+  border-right: 7px solid #7a7a7a;
+  border-radius: 2px;
+}
+.shelf-unit::before, .shelf-unit::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 7px; z-index: 3; pointer-events: none;
+}
+.shelf-unit::before { left: -7px; background: linear-gradient(90deg, #606060 0%, #aaa 35%, #999 60%, #777 100%); border-radius: 2px 0 0 2px; }
+.shelf-unit::after  { right: -7px; background: linear-gradient(90deg, #777 0%, #999 40%, #aaa 65%, #606060 100%); border-radius: 0 2px 2px 0; }
+
+/* Cross braces on back wall */
+.shelf-unit .back-brace {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+.shelf-unit .back-brace::before, .shelf-unit .back-brace::after {
+  content: ''; position: absolute;
+  width: 140%; height: 2px;
+  background: rgba(0,0,0,0.04);
+  top: 50%; left: -20%;
+}
+.shelf-unit .back-brace::before { transform: rotate(25deg); }
+.shelf-unit .back-brace::after  { transform: rotate(-25deg); }
+
+.plank {
+  height: 9px;
+  background: linear-gradient(180deg, #a08050 0%, #c4a87a 30%, #b89464 60%, #8c6e44 100%);
+  position: relative; z-index: 2;
+}
+.plank::before {
+  content: ''; position: absolute; top: 1px; left: 6px; right: 6px; height: 1px;
+  background: rgba(255,255,255,0.3);
+}
+.plank::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: rgba(0,0,0,0.15);
+}
+.plank-top { border-radius: 2px 2px 0 0; height: 10px; }
+
+.shelf-bay { padding: 8px 10px 6px; position: relative; z-index: 1; }
+.shelf-bay-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #907e66; margin-bottom: 5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.wbadge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  font-size: 9px; font-weight: 700;
+}
+.wbadge-l { background: #d4f0e4; color: #0F6E56; border: 1.5px solid #5DCAA5; }
+.wbadge-m { background: #faeeda; color: #854F0B; border: 1.5px solid #EF9F27; }
+.wbadge-h { background: #fcebeb; color: #A32D2D; border: 1.5px solid #F09595; }
+
+.drop-zone {
+  min-height: 68px; border: 2px dashed #c4b8a0; border-radius: 6px;
+  padding: 6px 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  transition: all .15s; background: rgba(255,255,255,0.3);
+}
+.drop-zone.drag-over { border-color: #1D9E75; background: rgba(29,158,117,0.1); }
+.drop-zone.complete  { border-style: solid; border-color: #5DCAA5; background: rgba(225,245,238,0.3); }
+
+.shelf-feet { display: flex; justify-content: space-between; width: calc(100% + 14px); margin-left: -7px; }
+.foot { width: 16px; height: 14px; background: linear-gradient(180deg, #888 0%, #5a5a5a 100%); border-radius: 0 0 4px 4px; }
+
+/* BOX ITEMS */
+.box-pool { width: 190px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.pool-title { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #5a7a94; text-align: center; margin-bottom: 2px; }
+#pool { display: flex; flex-direction: column; gap: 8px; }
+
+.box-item {
+  padding: 8px 10px; border-radius: 6px;
+  cursor: grab; user-select: none; touch-action: none;
+  transition: transform .12s, opacity .12s;
+  position: relative; border: 1.5px solid;
+  display: flex; align-items: center; gap: 10px;
+}
+.box-item .box-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: rgba(255,255,255,0.55);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.box-item .box-icon svg { width: 26px; height: 26px; }
+.box-item .box-text { flex: 1; min-width: 0; }
+.box-item .bname { font-size: 13px; font-weight: 600; display: block; }
+.box-item .bkg   { font-size: 11px; display: block; margin-top: 1px; opacity: 0.65; }
+.box-item:active { cursor: grabbing; transform: scale(1.05); }
+.box-item.dragging { opacity: 0.2; transform: scale(0.95); }
+.box-item.placed { cursor: default; }
+.box-item.placed:active { transform: none; }
+
+/* On shelf: compact */
+.drop-zone .box-item { padding: 5px 8px; }
+.drop-zone .box-item .box-icon { width: 30px; height: 30px; }
+.drop-zone .box-item .box-icon svg { width: 20px; height: 20px; }
+.drop-zone .box-item .bname { font-size: 11px; }
+.drop-zone .box-item .bkg { font-size: 10px; }
+
+.feedback { text-align: center; margin-top: 20px; min-height: 52px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fb-msg { font-size: 14px; font-weight: 600; padding: 8px 22px; border-radius: 20px; display: inline-block; animation: pop .25s ease-out; }
+@keyframes pop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
+.fb-ok  { background: #E1F5EE; color: #0F6E56; }
+.fb-err { background: #FCEBEB; color: #A32D2D; }
+.fb-win { background: #E1F5EE; color: #085041; font-size: 16px; }
+.reset-btn { margin-top: 6px; font-size: 13px; font-family: inherit; padding: 8px 24px; cursor: pointer; border-radius: 20px; border: 1px solid #c0c8d2; background: #fff; color: #0d3b66; font-weight: 500; transition: background .15s; }
+.reset-btn:hover { background: #f0f4f8; }
+.footer { margin-top: 36px; font-size: 12px; color: #8a9bb0; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="badge">Workplace safety</div>
+  <h1>Shelves &amp; Boxes</h1>
+  <p class="subtitle">Smart storage = safe workplace</p>
+</div>
+
+<div class="poster">
+  <div class="poster-banner">
+    <h2>Storage organisation &amp; safety</h2>
+    <p>A few minutes of organising prevents serious injuries</p>
+  </div>
+  <div class="tips">
+    <div class="tip"><div class="tip-num">1</div><div><div class="tip-title">Heavy items low, light items high</div><div class="tip-desc">Prevents toppling and makes retrieval safer for everyone</div></div></div>
+    <div class="tip"><div class="tip-num">2</div><div><div class="tip-title">Never exceed shelf weight limits</div><div class="tip-desc">Overloaded shelves can collapse without warning</div></div></div>
+    <div class="tip"><div class="tip-num">3</div><div><div class="tip-title">Use a step stool — never climb shelves</div><div class="tip-desc">Falls are a leading cause of workplace injuries</div></div></div>
+    <div class="tip"><div class="tip-num">4</div><div><div class="tip-title">Keep aisles and exits clear</div><div class="tip-desc">Blocked paths cause trips and slow emergency evacuations</div></div></div>
+    <div class="tip"><div class="tip-num">5</div><div><div class="tip-title">Inspect shelves regularly</div><div class="tip-desc">Check for damage, loose fittings, rust, or instability</div></div></div>
+  </div>
+</div>
+
+<div class="game-section">
+  <div class="game-header">
+    <h2>Test your knowledge</h2>
+    <p>Drag each item to the correct shelf — heavy items low, light items high</p>
+  </div>
+  <div class="score-bar">
+    <span>Correct: <strong id="sc-ok">0</strong></span>
+    <span>Mistakes: <strong id="sc-err">0</strong></span>
+  </div>
+  <div class="game-area">
+    <div class="shelf-outer">
+      <div class="shelf-unit">
+        <div class="back-brace"></div>
+        <div class="plank plank-top"></div>
+        <div class="shelf-bay">
+          <div class="shelf-bay-label"><span class="wbadge wbadge-l">L</span> Top shelf — light items</div>
+          <div class="drop-zone" data-shelf="top" id="shelf-top"></div>
+        </div>
+        <div class="plank"></div>
+        <div class="shelf-bay">
+          <div class="shelf-bay-label"><span class="wbadge wbadge-m">M</span> Middle shelf — medium items</div>
+          <div class="drop-zone" data-shelf="mid" id="shelf-mid"></div>
+        </div>
+        <div class="plank"></div>
+        <div class="shelf-bay">
+          <div class="shelf-bay-label"><span class="wbadge wbadge-h">H</span> Bottom shelf — heavy items</div>
+          <div class="drop-zone" data-shelf="bot" id="shelf-bot"></div>
+        </div>
+        <div class="plank"></div>
+      </div>
+      <div class="shelf-feet"><div class="foot"></div><div class="foot"></div></div>
+    </div>
+    <div class="box-pool">
+      <div class="pool-title">Items to place</div>
+      <div id="pool"></div>
+    </div>
+  </div>
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<div class="footer">Workplace Safety Team &middot; Shelves &amp; Boxes &middot; 2026</div>
+
+<script>
+// SVG icons for each item
+const ICONS = {
+  paper_towels: '<svg viewBox="0 0 32 32" fill="none"><rect x="8" y="6" width="16" height="20" rx="3" fill="#a8d8b9" stroke="#5ba97a" stroke-width="1.2"/><path d="M12 10h8M12 14h8M12 18h6" stroke="#5ba97a" stroke-width="1" stroke-linecap="round"/><path d="M16 6V3" stroke="#5ba97a" stroke-width="1.2" stroke-linecap="round"/><circle cx="16" cy="2.5" r="1" fill="#5ba97a"/></svg>',
+
+  gloves: '<svg viewBox="0 0 32 32" fill="none"><path d="M10 28V14c0-1 .5-2 1.5-2h1V8.5a1.5 1.5 0 013 0V12h1V7a1.5 1.5 0 013 0v5h1V8.5a1.5 1.5 0 013 0V15l1-2a1.5 1.5 0 012.6 1.5L24 22v6H10z" fill="#b8c4f0" stroke="#7b8ac4" stroke-width="1"/></svg>',
+
+  spray: '<svg viewBox="0 0 32 32" fill="none"><rect x="10" y="14" width="12" height="14" rx="2" fill="#87ceeb" stroke="#4a9ec4" stroke-width="1"/><rect x="12" y="8" width="8" height="6" rx="1" fill="#d0d0d0" stroke="#999" stroke-width="0.8"/><path d="M14 8V6h4v2" stroke="#999" stroke-width="0.8"/><path d="M22 9l3-3" stroke="#4a9ec4" stroke-width="0.8" stroke-linecap="round"/><circle cx="26" cy="5" r="1" fill="#4a9ec4" opacity="0.5"/><path d="M22 7l2-1M22 11l3 1" stroke="#4a9ec4" stroke-width="0.6" stroke-linecap="round" opacity="0.5"/><text x="16" y="24" text-anchor="middle" font-size="5" fill="#4a9ec4" font-weight="600">SPRAY</text></svg>',
+
+  power_tools: '<svg viewBox="0 0 32 32" fill="none"><rect x="4" y="13" width="18" height="8" rx="2" fill="#f0c040" stroke="#c89a20" stroke-width="1"/><rect x="22" y="15" width="7" height="4" rx="0.5" fill="#888" stroke="#666" stroke-width="0.8"/><circle cx="10" cy="17" r="2" fill="#c89a20"/><rect x="6" y="21" width="5" height="5" rx="1" fill="#e8b030" stroke="#c89a20" stroke-width="0.8"/></svg>',
+
+  paint: '<svg viewBox="0 0 32 32" fill="none"><rect x="7" y="10" width="18" height="16" rx="2" fill="#e8e0d0" stroke="#a09080" stroke-width="1"/><rect x="7" y="10" width="18" height="5" rx="2" fill="#4488cc" stroke="#336699" stroke-width="0.8"/><path d="M12 10V7h8v3" stroke="#a09080" stroke-width="1"/><rect x="14" y="6" width="4" height="2" rx="0.5" fill="#c0b0a0" stroke="#a09080" stroke-width="0.6"/><text x="16" y="22" text-anchor="middle" font-size="4.5" fill="#6a5a4a" font-weight="600">PAINT</text></svg>',
+
+  steel: '<svg viewBox="0 0 32 32" fill="none"><path d="M4 10h24l-2 6H6z" fill="#a0a8b4" stroke="#6a7080" stroke-width="1"/><path d="M6 16h20l-2 6H8z" fill="#8890a0" stroke="#6a7080" stroke-width="1"/><path d="M8 22h16l-1 4H9z" fill="#707880" stroke="#6a7080" stroke-width="0.8"/><path d="M6 12h20" stroke="#6a7080" stroke-width="0.5" opacity="0.4"/><path d="M8 18h16" stroke="#6a7080" stroke-width="0.5" opacity="0.4"/></svg>',
+
+  concrete: '<svg viewBox="0 0 32 32" fill="none"><path d="M7 8h18v18c0 1-1 2-2 2H9c-1 0-2-1-2-2V8z" fill="#c4b8a0" stroke="#8a7e66" stroke-width="1"/><rect x="7" y="8" width="18" height="5" fill="#8a7e66"/><text x="16" y="12" text-anchor="middle" font-size="4" fill="#e8e0d0" font-weight="700">CEMENT</text><text x="16" y="20" text-anchor="middle" font-size="5" fill="#6a5e46" font-weight="600">25 KG</text><circle cx="12" cy="24" r="1" fill="#b0a890" opacity="0.5"/><circle cx="20" cy="23" r="0.8" fill="#b0a890" opacity="0.5"/></svg>',
+
+  battery: '<svg viewBox="0 0 32 32" fill="none"><rect x="6" y="10" width="20" height="16" rx="2" fill="#2a2a2a" stroke="#444" stroke-width="1"/><rect x="10" y="7" width="4" height="3" rx="0.5" fill="#cc3333"/><rect x="18" y="7" width="4" height="3" rx="0.5" fill="#444"/><text x="12" y="15" font-size="6" fill="#cc3333" font-weight="700">+</text><text x="20" y="15" font-size="6" fill="#888" font-weight="700">-</text><path d="M9 20h5M11.5 18v5" stroke="#cc3333" stroke-width="1.2" stroke-linecap="round"/><path d="M19 20h4" stroke="#888" stroke-width="1.2" stroke-linecap="round"/></svg>'
+};
+
+const BOXES = [
+  {id:'b1', name:'Paper towels',   kg:'2 kg',  correct:'top', bg:'#d4f0e4', border:'#5DCAA5', color:'#085041', icon:'paper_towels'},
+  {id:'b2', name:'Gloves (box)',   kg:'1 kg',  correct:'top', bg:'#dddcfb', border:'#AFA9EC', color:'#3C3489', icon:'gloves'},
+  {id:'b3', name:'Cleaning spray', kg:'3 kg',  correct:'top', bg:'#d4f0e4', border:'#5DCAA5', color:'#085041', icon:'spray'},
+  {id:'b4', name:'Power tools',    kg:'12 kg', correct:'mid', bg:'#f7e8c5', border:'#E8A830', color:'#633806', icon:'power_tools'},
+  {id:'b5', name:'Paint cans',     kg:'15 kg', correct:'mid', bg:'#f7e8c5', border:'#E8A830', color:'#633806', icon:'paint'},
+  {id:'b6', name:'Steel parts',    kg:'30 kg', correct:'bot', bg:'#f5ddd5', border:'#E8845A', color:'#712B13', icon:'steel'},
+  {id:'b7', name:'Concrete bags',  kg:'25 kg', correct:'bot', bg:'#f5ddd5', border:'#E8845A', color:'#712B13', icon:'concrete'},
+  {id:'b8', name:'Car batteries',  kg:'20 kg', correct:'bot', bg:'#f5d5d5', border:'#E87070', color:'#791F1F', icon:'battery'},
+];
+
+let scoreOk=0, scoreErr=0, placed=0;
+const poolEl=document.getElementById('pool');
+const fb=document.getElementById('feedback');
+let dragId=null;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function createBox(b){
+  const d=document.createElement('div');
+  d.className='box-item'; d.draggable=true; d.dataset.id=b.id;
+  d.style.background=b.bg; d.style.borderColor=b.border;
+  d.innerHTML=
+    '<div class="box-icon">'+ICONS[b.icon]+'</div>'+
+    '<div class="box-text">'+
+      '<span class="bname" style="color:'+b.color+'">'+b.name+'</span>'+
+      '<span class="bkg" style="color:'+b.color+'">'+b.kg+'</span>'+
+    '</div>';
+  d.addEventListener('dragstart',onDS);
+  d.addEventListener('dragend',onDE);
+  d.addEventListener('touchstart',onTS,{passive:false});
+  return d;
+}
+
+function init(){
+  scoreOk=0; scoreErr=0; placed=0;
+  document.getElementById('sc-ok').textContent='0';
+  document.getElementById('sc-err').textContent='0';
+  fb.innerHTML=''; poolEl.innerHTML='';
+  ['shelf-top','shelf-mid','shelf-bot'].forEach(id=>{
+    const el=document.getElementById(id); el.innerHTML=''; el.classList.remove('complete');
+  });
+  shuffle([...BOXES]).forEach(b=>poolEl.appendChild(createBox(b)));
+}
+
+function onDS(e){
+  const el=e.target.closest('.box-item');
+  dragId=el.dataset.id; el.classList.add('dragging');
+  e.dataTransfer.effectAllowed='move';
+}
+function onDE(e){
+  e.target.closest('.box-item').classList.remove('dragging');
+  dragId=null;
+  document.querySelectorAll('.drop-zone').forEach(r=>r.classList.remove('drag-over'));
+}
+
+document.querySelectorAll('.drop-zone').forEach(row=>{
+  row.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';row.classList.add('drag-over')});
+  row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+  row.addEventListener('drop',e=>{e.preventDefault();row.classList.remove('drag-over');if(dragId)drop(dragId,row.dataset.shelf)});
+});
+
+let tEl=null,tClone=null,tId=null;
+function onTS(e){
+  e.preventDefault();
+  const el=e.target.closest('.box-item');
+  if(el.classList.contains('placed'))return;
+  tEl=el; tId=el.dataset.id; el.classList.add('dragging');
+  tClone=el.cloneNode(true);
+  Object.assign(tClone.style,{position:'fixed',pointerEvents:'none',zIndex:'9999',width:el.offsetWidth+'px',opacity:'0.92',transform:'scale(1.06)'});
+  document.body.appendChild(tClone);
+  mvC(e.touches[0]);
+  document.addEventListener('touchmove',onTM,{passive:false});
+  document.addEventListener('touchend',onTE);
+}
+function onTM(e){e.preventDefault();mvC(e.touches[0]);hlS(e.touches[0])}
+function mvC(t){if(tClone){tClone.style.left=(t.clientX-70)+'px';tClone.style.top=(t.clientY-30)+'px'}}
+function hlS(t){document.querySelectorAll('.drop-zone').forEach(r=>{const rc=r.getBoundingClientRect();r.classList.toggle('drag-over',t.clientX>=rc.left&&t.clientX<=rc.right&&t.clientY>=rc.top&&t.clientY<=rc.bottom)})}
+function onTE(e){
+  document.removeEventListener('touchmove',onTM);
+  document.removeEventListener('touchend',onTE);
+  if(tClone){tClone.remove();tClone=null}
+  if(tEl)tEl.classList.remove('dragging');
+  const t=e.changedTouches[0];
+  document.querySelectorAll('.drop-zone').forEach(r=>{
+    r.classList.remove('drag-over');
+    const rc=r.getBoundingClientRect();
+    if(t.clientX>=rc.left&&t.clientX<=rc.right&&t.clientY>=rc.top&&t.clientY<=rc.bottom&&tId)drop(tId,r.dataset.shelf);
+  });
+  tEl=null; tId=null;
+}
+
+function drop(id,shelf){
+  const box=BOXES.find(b=>b.id===id); if(!box)return;
+  const el=poolEl.querySelector('[data-id="'+id+'"]');
+  if(!el||el.classList.contains('placed'))return;
+
+  if(box.correct===shelf){
+    scoreOk++; document.getElementById('sc-ok').textContent=scoreOk;
+    const tgt=document.getElementById('shelf-'+shelf);
+    const c=createBox(box); c.classList.add('placed'); c.draggable=false;
+    tgt.appendChild(c); el.remove(); placed++;
+    const exp=BOXES.filter(b=>b.correct===shelf).length;
+    if(tgt.querySelectorAll('.box-item').length>=exp) tgt.classList.add('complete');
+    showFB('Correct!','ok');
+    if(placed===BOXES.length) showWin();
+  } else {
+    scoreErr++; document.getElementById('sc-err').textContent=scoreErr;
+    const h=box.correct==='top'?'Top shelf (light)':box.correct==='mid'?'Middle shelf (medium)':'Bottom shelf (heavy)';
+    showFB('Try again — '+box.name+' goes on: '+h,'err');
+  }
+}
+
+function showFB(m,t){fb.innerHTML='<span class="fb-msg fb-'+t+'">'+m+'</span>'}
+function showWin(){fb.innerHTML='<span class="fb-msg fb-win">All items placed correctly! Well done!</span><button class="reset-btn" onclick="init()">Play again</button>'}
+init();
+</script>
+</body>
+</html>

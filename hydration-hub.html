@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hydration Hub · Bolt H&S</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#EEF4F5;
+    --panel:#FFFFFF;
+    --ink:#0A2C33;
+    --ink-soft:#41636B;
+    --line:#D4E2E4;
+    --aqua:#1FA9C6;
+    --aqua-deep:#0E7C8B;
+    --good:#1FB87A;
+    --warn:#E8A23D;
+    --danger:#D75B47;
+    --shadow:0 1px 2px rgba(10,44,51,.06),0 12px 32px rgba(10,44,51,.07);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--ground);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:30;
+    background:rgba(238,244,245,.82);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:15px}
+  .drop{
+    width:26px;height:26px;border-radius:50% 50% 50% 0;
+    background:linear-gradient(150deg,var(--aqua),var(--aqua-deep));
+    transform:rotate(-45deg);box-shadow:inset -3px -3px 6px rgba(255,255,255,.35);
+  }
+  .brand .tag{font-size:11px;color:var(--ink-soft);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+  .lang button{
+    border:0;background:transparent;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;
+    padding:7px 14px;color:var(--ink-soft);transition:.2s;
+  }
+  .lang button.on{background:var(--ink);color:#fff}
+
+  /* ---------- hero ---------- */
+  .hero{padding:54px 0 30px}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--aqua-deep);font-weight:600;margin-bottom:14px;
+  }
+  h1{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+    font-size:clamp(34px,6vw,60px);line-height:1.02;letter-spacing:-.02em;max-width:16ch;
+  }
+  .lede{margin-top:18px;font-size:17px;color:var(--ink-soft);max-width:54ch}
+
+  /* ---------- calculator layout ---------- */
+  .calc{
+    display:grid;grid-template-columns:1fr 360px;gap:24px;
+    margin-top:38px;align-items:stretch;
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:26px;
+  }
+  .card h2{
+    font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:600;
+    letter-spacing:-.01em;margin-bottom:4px;
+  }
+  .card .sub{font-size:13px;color:var(--ink-soft);margin-bottom:22px}
+
+  .field{margin-bottom:22px}
+  .field>label{display:block;font-size:13px;font-weight:600;margin-bottom:10px}
+  .field .val{font-family:'JetBrains Mono',monospace;color:var(--aqua-deep);float:right;font-weight:700}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+    background:linear-gradient(90deg,var(--aqua) var(--p,40%),var(--line) var(--p,40%));outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;
+    border:3px solid var(--aqua-deep);cursor:pointer;box-shadow:0 2px 6px rgba(10,44,51,.25);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--aqua-deep);cursor:pointer;
+  }
+  .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .seg button{
+    border:1px solid var(--line);background:var(--ground);border-radius:11px;cursor:pointer;
+    padding:12px 6px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-soft);
+    transition:.18s;line-height:1.25;
+  }
+  .seg button .ic{display:block;font-size:18px;margin-bottom:5px}
+  .seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* ---------- gauge ---------- */
+  .gaugecard{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(180deg,#0A2C33,#08383F)}
+  .vessel{
+    position:relative;width:140px;height:230px;margin:6px auto 4px;
+    border:3px solid rgba(255,255,255,.4);border-top:0;
+    border-radius:14px 14px 30px 30px;overflow:hidden;background:rgba(255,255,255,.05);
+  }
+  .vessel .cap{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:54px;height:11px;border-radius:5px;background:rgba(255,255,255,.55)}
+  .water{
+    position:absolute;left:0;right:0;bottom:0;height:0%;
+    background:linear-gradient(180deg,var(--aqua),var(--aqua-deep));
+    transition:height 1s cubic-bezier(.4,0,.2,1);
+  }
+  .water svg{position:absolute;top:-14px;left:0;width:200%;height:18px;animation:wave 4s linear infinite}
+  .water svg.b{top:-10px;opacity:.5;animation-duration:6s;animation-direction:reverse}
+  @keyframes wave{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ticks{position:absolute;inset:0;pointer-events:none}
+  .ticks i{position:absolute;right:0;width:9px;height:1px;background:rgba(255,255,255,.35)}
+  .readout{color:#fff;margin-top:8px}
+  .readout .big{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:44px;line-height:1}
+  .readout .big span{font-size:18px;opacity:.7}
+  .readout .glasses{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px}
+  .progresslbl{font-family:'JetBrains Mono',monospace;font-size:13px;color:#bfe6ef;margin-top:14px;font-weight:600}
+
+  /* ---------- tracker ---------- */
+  .tracker{margin-top:24px}
+  .tracker h2{margin-bottom:4px}
+  .cups{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .cup{
+    width:42px;height:52px;border-radius:5px 5px 9px 9px;border:2px solid var(--line);
+    background:var(--ground);cursor:pointer;position:relative;overflow:hidden;transition:.15s;
+  }
+  .cup:hover{border-color:var(--aqua)}
+  .cup .fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:linear-gradient(180deg,var(--aqua),var(--aqua-deep));transition:height .35s}
+  .cup.on .fill{height:100%}
+  .trackrow{display:flex;align-items:center;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:12px}
+  .reset{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 16px;cursor:pointer;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink-soft)}
+  .reset:hover{border-color:var(--aqua-deep);color:var(--aqua-deep)}
+
+  /* ---------- shift rhythm ---------- */
+  .rhythm{margin-top:18px;background:var(--ground);border-radius:12px;padding:16px 18px;font-size:14px;display:flex;gap:12px;align-items:center}
+  .rhythm .clock{font-size:22px}
+  .rhythm b{font-family:'JetBrains Mono',monospace;color:var(--aqua-deep)}
+
+  /* ---------- sections ---------- */
+  section{padding:46px 0}
+  .sechead{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3.5vw,32px);font-weight:700;letter-spacing:-.015em}
+  .secsub{color:var(--ink-soft);margin-top:8px;max-width:58ch}
+
+  /* urine scale */
+  .pee{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:26px}
+  .pee .sw{height:64px;border-radius:9px;border:1px solid rgba(10,44,51,.08);position:relative}
+  .pee .sw span{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:rgba(10,44,51,.45)}
+  .peebands{display:grid;grid-template-columns:3fr 3fr 2fr;gap:10px;margin-top:12px}
+  .band{border-radius:10px;padding:12px 14px;font-size:13px;color:#fff;font-weight:500}
+  .band b{display:block;font-weight:700;margin-bottom:2px}
+
+  /* signs grid */
+  .signs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+  .sign{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+  .sign .ic{font-size:24px;display:block;margin-bottom:9px}
+  .sign .t{font-weight:600;font-size:14px}
+
+  /* myths */
+  .myths{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+  .myth{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+  .myth .m{font-weight:600;color:var(--danger);font-size:14px;margin-bottom:8px;display:flex;gap:8px;align-items:flex-start}
+  .myth .f{color:var(--ink-soft);font-size:14px;display:flex;gap:8px;align-items:flex-start;padding-top:8px;border-top:1px dashed var(--line)}
+  .myth .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;flex-shrink:0;margin-top:1px}
+  .myth .m .lbl{background:#fbe7e2;color:var(--danger)}
+  .myth .f .lbl{background:#dcf3e9;color:var(--good)}
+
+  /* callout */
+  .note{margin-top:30px;border-left:3px solid var(--warn);background:#fdf6ea;border-radius:0 12px 12px 0;padding:16px 20px;font-size:13.5px;color:#7a5a23}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--ink-soft);font-size:12.5px;text-align:center}
+  footer a{color:var(--aqua-deep)}
+
+  @media(max-width:880px){
+    .calc{grid-template-columns:1fr}
+    .signs{grid-template-columns:1fr 1fr}
+    .myths{grid-template-columns:1fr}
+    .pee{grid-template-columns:repeat(4,1fr)}
+    .peebands{grid-template-columns:1fr}
+  }
+  @media(prefers-reduced-motion:reduce){.water svg{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">
+      <span class="drop"></span>
+      <span>Hydration Hub<br><span class="tag" data-i="brandtag">Bezpieczeństwo i Higiena Pracy</span></span>
+    </div>
+    <div class="lang">
+      <button data-lang="pl" class="on">PL</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow" data-i="eyebrow">Nawodnienie w miejscu pracy</div>
+    <h1 data-i="h1">Ile naprawdę potrzebujesz wypić dzisiaj?</h1>
+    <p class="lede" data-i="lede">Odwodnienie obniża koncentrację, spowalnia reakcje i zwiększa ryzyko błędów oraz wypadków — szczególnie przy pracy fizycznej i w cieple. Ustaw swoje parametry, a policzymy Twój dzienny cel i rytm picia.</p>
+  </div>
+
+  <div class="calc">
+    <!-- inputs -->
+    <div class="card">
+      <h2 data-i="ctitle">Twój kalkulator</h2>
+      <p class="sub" data-i="csub">Szacunek dla zdrowej osoby dorosłej. Suwaki i przyciski przeliczają wynik na żywo.</p>
+
+      <div class="field">
+        <label data-i="weight">Masa ciała <span class="val" id="wval">75 kg</span></label>
+        <input type="range" id="weight" min="40" max="140" value="75" step="1">
+      </div>
+
+      <div class="field">
+        <label data-i="actlbl">Intensywność pracy</label>
+        <div class="seg" id="act">
+          <button data-v="light" class="on"><span class="ic">🪑</span><span data-i="act_light">Lekka<br>biuro / stanie</span></button>
+          <button data-v="moderate"><span class="ic">📦</span><span data-i="act_mod">Średnia<br>magazyn / chodzenie</span></button>
+          <button data-v="heavy"><span class="ic">🏋️</span><span data-i="act_heavy">Ciężka<br>dźwiganie / wysiłek</span></button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label data-i="heatlbl">Temperatura otoczenia</label>
+        <div class="seg" id="heat">
+          <button data-v="normal" class="on"><span class="ic">🌤️</span><span data-i="heat_n">Normalna<br>do 24°C</span></button>
+          <button data-v="warm"><span class="ic">☀️</span><span data-i="heat_w">Ciepło<br>24–28°C</span></button>
+          <button data-v="hot"><span class="ic">🔥</span><span data-i="heat_h">Gorąco<br>powyżej 28°C</span></button>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:0">
+        <label data-i="shift">Długość zmiany <span class="val" id="sval">8 h</span></label>
+        <input type="range" id="shift" min="4" max="12" value="8" step="1">
+      </div>
+    </div>
+
+    <!-- gauge -->
+    <div class="card gaugecard">
+      <div class="vessel">
+        <div class="cap"></div>
+        <div class="ticks" id="ticks"></div>
+        <div class="water" id="water" style="height:0%">
+          <svg viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M0 10 Q15 2 30 10 T60 10 T90 10 T120 10 V18 H0 Z" fill="rgba(255,255,255,.25)"/></svg>
+          <svg class="b" viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M0 10 Q15 2 30 10 T60 10 T90 10 T120 10 V18 H0 Z" fill="rgba(255,255,255,.18)"/></svg>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="big"><span id="targetVal">2.6</span><span> L</span></div>
+        <div class="glasses"><span id="glassCount">10</span> <span data-i="glassesword">szklanek po 250 ml</span></div>
+        <div class="progresslbl"><span id="progLbl">0.0 / 2.6 L</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tracker -->
+  <div class="card tracker">
+    <h2 data-i="ttitle">Odhaczaj swoje picie w ciągu dnia</h2>
+    <p class="sub" data-i="tsub">Kliknij szklankę za każdym razem, gdy się napijesz. Butelka powyżej napełnia się do Twojego celu.</p>
+    <div class="cups" id="cups"></div>
+    <div class="trackrow">
+      <div class="rhythm">
+        <span class="clock">⏱️</span>
+        <span data-i="rhythmtxt">W trakcie zmiany pij ok. <b id="rhythmMl">250 ml</b> mniej więcej co <b id="rhythmMin">90 min</b>.</span>
+      </div>
+      <button class="reset" id="reset" data-i="resetbtn">Wyzeruj dzień</button>
+    </div>
+  </div>
+</div>
+
+<!-- urine self-check -->
+<section>
+  <div class="wrap">
+    <h2 class="sechead" data-i="peetitle">Szybki test: kolor moczu</h2>
+    <p class="secsub" data-i="peesub">Najprostszy wskaźnik nawodnienia — stosowany w programach ochrony przed stresem cieplnym. Im jaśniejszy, tym lepiej.</p>
+    <div class="pee" id="peeScale"></div>
+    <div class="peebands">
+      <div class="band" style="background:var(--good)"><b data-i="pee_good">1–3 · Dobrze nawodniony</b><span data-i="pee_good_t">Tak trzymaj.</span></div>
+      <div class="band" style="background:var(--warn)"><b data-i="pee_warn">4–6 · Pij teraz</b><span data-i="pee_warn_t">Sięgnij po wodę w najbliższych minutach.</span></div>
+      <div class="band" style="background:var(--danger)"><b data-i="pee_bad">7–8 · Odwodnienie</b><span data-i="pee_bad_t">Pij i zgłoś się, jeśli są objawy.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- signs -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2 class="sechead" data-i="signtitle">Objawy odwodnienia, których nie ignoruj</h2>
+    <p class="secsub" data-i="signsub">Pragnienie pojawia się dopiero, gdy organizm jest już lekko odwodniony — reaguj wcześniej.</p>
+    <div class="signs" id="signs"></div>
+  </div>
+</section>
+
+<!-- myths -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2 class="sechead" data-i="mythtitle">Mit kontra fakt</h2>
+    <div class="myths" id="myths"></div>
+    <div class="note" data-i="note">⚠️ To narzędzie podaje orientacyjny szacunek dla zdrowych osób dorosłych. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym zmieniają zapotrzebowanie na płyny — w razie wątpliwości skonsultuj się z lekarzem medycyny pracy.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span data-i="foot">Materiał edukacyjny zespołu BHP · Bolt</span> · <a href="#" data-i="footlink">Zgłoś zdarzenie / wniosek</a>
+  </div>
+</footer>
+
+<script>
+/* ---------------- i18n ---------------- */
+const I = {
+  pl:{
+    brandtag:"Bezpieczeństwo i Higiena Pracy",
+    eyebrow:"Nawodnienie w miejscu pracy",
+    h1:"Ile naprawdę potrzebujesz wypić dzisiaj?",
+    lede:"Odwodnienie obniża koncentrację, spowalnia reakcje i zwiększa ryzyko błędów oraz wypadków — szczególnie przy pracy fizycznej i w cieple. Ustaw swoje parametry, a policzymy Twój dzienny cel i rytm picia.",
+    ctitle:"Twój kalkulator",
+    csub:"Szacunek dla zdrowej osoby dorosłej. Suwaki i przyciski przeliczają wynik na żywo.",
+    actlbl:"Intensywność pracy", heatlbl:"Temperatura otoczenia",
+    act_light:"Lekka<br>biuro / stanie", act_mod:"Średnia<br>magazyn / chodzenie", act_heavy:"Ciężka<br>dźwiganie / wysiłek",
+    heat_n:"Normalna<br>do 24°C", heat_w:"Ciepło<br>24–28°C", heat_h:"Gorąco<br>powyżej 28°C",
+    glassesword:"szklanek po 250 ml",
+    ttitle:"Odhaczaj swoje picie w ciągu dnia",
+    tsub:"Kliknij szklankę za każdym razem, gdy się napijesz. Butelka powyżej napełnia się do Twojego celu.",
+    rhythmtxt:'W trakcie zmiany pij ok. <b id="rhythmMl">250 ml</b> mniej więcej co <b id="rhythmMin">90 min</b>.',
+    resetbtn:"Wyzeruj dzień",
+    peetitle:"Szybki test: kolor moczu",
+    peesub:"Najprostszy wskaźnik nawodnienia — stosowany w programach ochrony przed stresem cieplnym. Im jaśniejszy, tym lepiej.",
+    pee_good:"1–3 · Dobrze nawodniony", pee_good_t:"Tak trzymaj.",
+    pee_warn:"4–6 · Pij teraz", pee_warn_t:"Sięgnij po wodę w najbliższych minutach.",
+    pee_bad:"7–8 · Odwodnienie", pee_bad_t:"Pij i zgłoś się, jeśli są objawy.",
+    signtitle:"Objawy odwodnienia, których nie ignoruj",
+    signsub:"Pragnienie pojawia się dopiero, gdy organizm jest już lekko odwodniony — reaguj wcześniej.",
+    mythtitle:"Mit kontra fakt",
+    note:"⚠️ To narzędzie podaje orientacyjny szacunek dla zdrowych osób dorosłych. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym zmieniają zapotrzebowanie na płyny — w razie wątpliwości skonsultuj się z lekarzem medycyny pracy.",
+    foot:"Materiał edukacyjny zespołu BHP · Bolt", footlink:"Zgłoś zdarzenie / wniosek",
+    signs:[
+      ["🥵","Suchość w ustach i pragnienie"],["🟫","Ciemny mocz"],["🤕","Ból głowy"],["😵‍💫","Zmęczenie i zawroty głowy"],
+      ["🧠","Spadek koncentracji"],["💪","Skurcze mięśni"],["💓","Przyspieszone tętno"],["🚻","Rzadsze oddawanie moczu"]
+    ],
+    myths:[
+      ["Jak nie czuję pragnienia, to jestem nawodniony.","Pragnienie pojawia się z opóźnieniem — pij regularnie, nie tylko gdy chce Ci się pić."],
+      ["Kawa odwadnia, więc się nie liczy.","Umiarkowana kawa i herbata też dostarczają płynów i wliczają się do bilansu."],
+      ["Każdy napój jest równie dobry jak woda.","Napoje słodzone i energetyki dodają cukru — najlepsza jest woda i napoje niesłodzone."],
+      ["Lepiej wypić dużo naraz na zapas.","Lepiej pić mniejsze porcje regularnie — organizm przyswaja je skuteczniej."]
+    ]
+  },
+  en:{
+    brandtag:"Health & Safety",
+    eyebrow:"Hydration at work",
+    h1:"How much do you really need to drink today?",
+    lede:"Dehydration lowers concentration, slows reactions and raises the risk of mistakes and accidents — especially during physical work and in the heat. Set your parameters and we'll calculate your daily target and drinking rhythm.",
+    ctitle:"Your calculator",
+    csub:"An estimate for a healthy adult. Sliders and buttons recalculate live.",
+    actlbl:"Work intensity", heatlbl:"Ambient temperature",
+    act_light:"Light<br>office / standing", act_mod:"Moderate<br>warehouse / walking", act_heavy:"Heavy<br>lifting / exertion",
+    heat_n:"Normal<br>up to 24°C", heat_w:"Warm<br>24–28°C", heat_h:"Hot<br>above 28°C",
+    glassesword:"glasses of 250 ml",
+    ttitle:"Track your drinking through the day",
+    tsub:"Tap a glass each time you drink. The bottle above fills toward your goal.",
+    rhythmtxt:'During your shift, drink about <b id="rhythmMl">250 ml</b> roughly every <b id="rhythmMin">90 min</b>.',
+    resetbtn:"Reset day",
+    peetitle:"Quick check: urine colour",
+    peesub:"The simplest hydration indicator — used in heat-stress programmes. The paler, the better.",
+    pee_good:"1–3 · Well hydrated", pee_good_t:"Keep it up.",
+    pee_warn:"4–6 · Drink now", pee_warn_t:"Reach for water in the next few minutes.",
+    pee_bad:"7–8 · Dehydrated", pee_bad_t:"Drink, and report it if you have symptoms.",
+    signtitle:"Dehydration signs you shouldn't ignore",
+    signsub:"Thirst only kicks in once you're already mildly dehydrated — act earlier.",
+    mythtitle:"Myth vs fact",
+    note:"⚠️ This tool gives a rough estimate for healthy adults. Heart or kidney conditions, pregnancy, medication or exertion in full protective clothing change fluid needs — when in doubt, consult your occupational physician.",
+    foot:"Educational material by the H&S team · Bolt", footlink:"Report an event / request",
+    signs:[
+      ["🥵","Dry mouth and thirst"],["🟫","Dark urine"],["🤕","Headache"],["😵‍💫","Fatigue and dizziness"],
+      ["🧠","Drop in concentration"],["💪","Muscle cramps"],["💓","Rapid heartbeat"],["🚻","Urinating less often"]
+    ],
+    myths:[
+      ["If I'm not thirsty, I'm hydrated.","Thirst lags behind — drink regularly, not only when you feel like it."],
+      ["Coffee dehydrates, so it doesn't count.","Moderate coffee and tea still provide fluids and count toward your balance."],
+      ["Any drink is as good as water.","Sugary and energy drinks add sugar — water and unsweetened drinks are best."],
+      ["Better to drink a lot at once to stock up.","Smaller portions taken regularly work better — the body absorbs them more effectively."]
+    ]
+  }
+};
+
+/* ---------------- state ---------------- */
+let lang='pl';
+const state={weight:75,act:'light',heat:'normal',shift:8};
+let target=2600, glassesNeeded=10, drunk=0;
+
+const ADD={light:0,moderate:600,heavy:1200};
+const HEAT={normal:0,warm:400,hot:800};
+
+function compute(){
+  let ml = state.weight*30 + ADD[state.act] + HEAT[state.heat] + Math.max(0,state.shift-8)*150;
+  ml = Math.min(5000, Math.max(1500, ml));
+  target = Math.round(ml/100)*100;
+  glassesNeeded = Math.ceil(target/250);
+}
+
+function fmtL(ml){return (ml/1000).toFixed(1).replace('.',lang==='pl'?',':'.');}
+
+function render(){
+  compute();
+  // gauge
+  document.getElementById('targetVal').textContent = fmtL(target);
+  document.getElementById('glassCount').textContent = glassesNeeded;
+  if(drunk>target) drunk=target;
+  const pct = Math.min(100, drunk/target*100);
+  document.getElementById('water').style.height = pct+'%';
+  document.getElementById('progLbl').textContent = fmtL(drunk)+' / '+fmtL(target)+' L';
+  // shift rhythm
+  const duringShift = target*(state.shift/16);
+  const glassesShift = Math.max(1,Math.round(duringShift/250));
+  const interval = Math.round((state.shift*60)/glassesShift/5)*5;
+  const ml = document.getElementById('rhythmMl'), mn=document.getElementById('rhythmMin');
+  if(ml) ml.textContent='250 ml'; if(mn) mn.textContent=interval+' min';
+  // cups
+  buildCups();
+}
+
+function buildCups(){
+  const box=document.getElementById('cups'); box.innerHTML='';
+  const filled=Math.round(drunk/250);
+  for(let i=0;i<glassesNeeded;i++){
+    const c=document.createElement('div'); c.className='cup'+(i<filled?' on':'');
+    c.innerHTML='<div class="fill"></div>';
+    c.onclick=()=>{ drunk=(i<filled? i:(i+1))*250; render(); };
+    box.appendChild(c);
+  }
+}
+
+/* ---------------- static builders ---------------- */
+function buildTicks(){
+  const t=document.getElementById('ticks');
+  for(let i=1;i<5;i++){const e=document.createElement('i');e.style.bottom=(i*20)+'%';e.style.width=(i%1?9:14)+'px';t.appendChild(e);}
+}
+function buildPee(){
+  const cols=['#FBF7E0','#F7EFC0','#F2E59A','#EBD774','#E0C24C','#CFA22F','#B07E1E','#8A5C16'];
+  const box=document.getElementById('peeScale'); box.innerHTML='';
+  cols.forEach((c,i)=>{const d=document.createElement('div');d.className='sw';d.style.background=c;d.innerHTML='<span>'+(i+1)+'</span>';box.appendChild(d);});
+}
+function buildSigns(){
+  const box=document.getElementById('signs'); box.innerHTML='';
+  I[lang].signs.forEach(s=>{const d=document.createElement('div');d.className='sign';d.innerHTML='<span class="ic">'+s[0]+'</span><div class="t">'+s[1]+'</div>';box.appendChild(d);});
+}
+function buildMyths(){
+  const box=document.getElementById('myths'); box.innerHTML='';
+  const mlbl=lang==='pl'?'MIT':'MYTH', flbl=lang==='pl'?'FAKT':'FACT';
+  I[lang].myths.forEach(m=>{const d=document.createElement('div');d.className='myth';
+    d.innerHTML='<div class="m"><span class="lbl">'+mlbl+'</span>'+m[0]+'</div><div class="f"><span class="lbl">'+flbl+'</span>'+m[1]+'</div>';
+    box.appendChild(d);});
+}
+
+/* ---------------- i18n apply ---------------- */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const k=el.getAttribute('data-i'); if(I[lang][k]!==undefined) el.innerHTML=I[lang][k];
+  });
+  buildSigns(); buildMyths(); render();
+}
+
+/* ---------------- wiring ---------------- */
+function bindRange(id,key,suffix){
+  const el=document.getElementById(id);
+  const upd=()=>{
+    state[key]=+el.value;
+    document.getElementById(id==='weight'?'wval':'sval').textContent=el.value+suffix;
+    const pct=(el.value-el.min)/(el.max-el.min)*100; el.style.setProperty('--p',pct+'%');
+    drunk=0; render();
+  };
+  el.addEventListener('input',upd); upd();
+}
+function bindSeg(id,key){
+  document.querySelectorAll('#'+id+' button').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on'); state[key]=b.getAttribute('data-v'); drunk=0; render();
+    };
+  });
+}
+
+document.querySelectorAll('.lang button').forEach(b=>{
+  b.onclick=()=>{document.querySelectorAll('.lang button').forEach(x=>x.classList.remove('on'));b.classList.add('on');lang=b.getAttribute('data-lang');applyLang();};
+});
+document.getElementById('reset').onclick=()=>{drunk=0;render();};
+
+buildTicks(); buildPee();
+bindRange('weight','weight',' kg'); bindRange('shift','shift',' h');
+bindSeg('act','act'); bindSeg('heat','heat');
+applyLang();
+</script>
+</body>
+</html>

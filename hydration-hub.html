@@ -223,7 +223,7 @@
       <p class="sub" data-i="csub">Szacunek dla zdrowej osoby dorosłej. Suwaki i przyciski przeliczają wynik na żywo.</p>
 
       <div class="field">
-        <label data-i="weight">Masa ciała <span class="val" id="wval">75 kg</span></label>
+        <label><span data-i="weight">Masa ciała</span> <span class="val" id="wval">75 kg</span></label>
         <input type="range" id="weight" min="40" max="140" value="75" step="1">
       </div>
 
@@ -246,7 +246,7 @@
       </div>
 
       <div class="field" style="margin-bottom:0">
-        <label data-i="shift">Długość zmiany <span class="val" id="sval">8 h</span></label>
+        <label><span data-i="shift">Długość zmiany</span> <span class="val" id="sval">8 h</span></label>
         <input type="range" id="shift" min="4" max="12" value="8" step="1">
       </div>
     </div>
@@ -312,13 +312,13 @@
   <div class="wrap">
     <h2 class="sechead" data-i="mythtitle">Mit kontra fakt</h2>
     <div class="myths" id="myths"></div>
-    <div class="note" data-i="note">⚠️ To narzędzie podaje orientacyjny szacunek dla zdrowych osób dorosłych. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym zmieniają zapotrzebowanie na płyny — w razie wątpliwości skonsultuj się z lekarzem medycyny pracy.</div>
+    <div class="note" data-i="note">⚠️ Ten kalkulator ma charakter wyłącznie poglądowy. Podaje orientacyjny szacunek dla zdrowej osoby dorosłej i nie uwzględnia indywidualnego stanu zdrowia. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym istotnie zmieniają zapotrzebowanie na płyny. Aby ustalić prawidłowe dzienne zapotrzebowanie dostosowane do Twojej sytuacji, skonsultuj się z lekarzem (np. medycyny pracy) lub dietetykiem.</div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span data-i="foot">Materiał edukacyjny zespołu BHP · Bolt</span> · <a href="#" data-i="footlink">Zgłoś zdarzenie / wniosek</a>
+    <span data-i="foot">Materiał edukacyjny zespołu BHP · Bolt</span> · <a href="https://www.cognitoforms.com/taxify1/eventnotificationform" target="_blank" rel="noopener" data-i="footlink">Zgłoś zdarzenie / wniosek</a>
   </div>
 </footer>
 
@@ -332,6 +332,7 @@ const I = {
     lede:"Odwodnienie obniża koncentrację, spowalnia reakcje i zwiększa ryzyko błędów oraz wypadków — szczególnie przy pracy fizycznej i w cieple. Ustaw swoje parametry, a policzymy Twój dzienny cel i rytm picia.",
     ctitle:"Twój kalkulator",
     csub:"Szacunek dla zdrowej osoby dorosłej. Suwaki i przyciski przeliczają wynik na żywo.",
+    weight:"Masa ciała", shift:"Długość zmiany",
     actlbl:"Intensywność pracy", heatlbl:"Temperatura otoczenia",
     act_light:"Lekka<br>biuro / stanie", act_mod:"Średnia<br>magazyn / chodzenie", act_heavy:"Ciężka<br>dźwiganie / wysiłek",
     heat_n:"Normalna<br>do 24°C", heat_w:"Ciepło<br>24–28°C", heat_h:"Gorąco<br>powyżej 28°C",
@@ -348,7 +349,7 @@ const I = {
     signtitle:"Objawy odwodnienia, których nie ignoruj",
     signsub:"Pragnienie pojawia się dopiero, gdy organizm jest już lekko odwodniony — reaguj wcześniej.",
     mythtitle:"Mit kontra fakt",
-    note:"⚠️ To narzędzie podaje orientacyjny szacunek dla zdrowych osób dorosłych. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym zmieniają zapotrzebowanie na płyny — w razie wątpliwości skonsultuj się z lekarzem medycyny pracy.",
+    note:"⚠️ Ten kalkulator ma charakter wyłącznie poglądowy. Podaje orientacyjny szacunek dla zdrowej osoby dorosłej i nie uwzględnia indywidualnego stanu zdrowia. Choroby serca lub nerek, ciąża, przyjmowane leki czy wysiłek w pełnym ubraniu ochronnym istotnie zmieniają zapotrzebowanie na płyny. Aby ustalić prawidłowe dzienne zapotrzebowanie dostosowane do Twojej sytuacji, skonsultuj się z lekarzem (np. medycyny pracy) lub dietetykiem.",
     foot:"Materiał edukacyjny zespołu BHP · Bolt", footlink:"Zgłoś zdarzenie / wniosek",
     signs:[
       ["🥵","Suchość w ustach i pragnienie"],["🟫","Ciemny mocz"],["🤕","Ból głowy"],["😵‍💫","Zmęczenie i zawroty głowy"],
@@ -368,6 +369,7 @@ const I = {
     lede:"Dehydration lowers concentration, slows reactions and raises the risk of mistakes and accidents — especially during physical work and in the heat. Set your parameters and we'll calculate your daily target and drinking rhythm.",
     ctitle:"Your calculator",
     csub:"An estimate for a healthy adult. Sliders and buttons recalculate live.",
+    weight:"Body weight", shift:"Shift length",
     actlbl:"Work intensity", heatlbl:"Ambient temperature",
     act_light:"Light<br>office / standing", act_mod:"Moderate<br>warehouse / walking", act_heavy:"Heavy<br>lifting / exertion",
     heat_n:"Normal<br>up to 24°C", heat_w:"Warm<br>24–28°C", heat_h:"Hot<br>above 28°C",
@@ -384,7 +386,7 @@ const I = {
     signtitle:"Dehydration signs you shouldn't ignore",
     signsub:"Thirst only kicks in once you're already mildly dehydrated — act earlier.",
     mythtitle:"Myth vs fact",
-    note:"⚠️ This tool gives a rough estimate for healthy adults. Heart or kidney conditions, pregnancy, medication or exertion in full protective clothing change fluid needs — when in doubt, consult your occupational physician.",
+    note:"⚠️ This calculator is for general guidance only. It gives a rough estimate for a healthy adult and does not account for your individual health condition. Heart or kidney conditions, pregnancy, medication or exertion in full protective clothing significantly change fluid needs. To establish the correct daily intake tailored to your situation, consult a doctor (e.g. an occupational physician) or a dietitian.",
     foot:"Educational material by the H&S team · Bolt", footlink:"Report an event / request",
     signs:[
       ["🥵","Dry mouth and thirst"],["🟫","Dark urine"],["🤕","Headache"],["😵‍💫","Fatigue and dizziness"],
@@ -406,6 +408,32 @@ let target=2600, glassesNeeded=10, drunk=0;
 
 const ADD={light:0,moderate:600,heavy:1200};
 const HEAT={normal:0,warm:400,hot:800};
+
+/* ---------------- persistence ---------------- */
+const STORE_KEY='bolt-hydration';
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY); if(!raw) return;
+    const s=JSON.parse(raw);
+    // personal profile persists across days
+    if(typeof s.weight==='number') state.weight=s.weight;
+    if(s.act) state.act=s.act;
+    if(s.heat) state.heat=s.heat;
+    if(typeof s.shift==='number') state.shift=s.shift;
+    if(s.lang) lang=s.lang;
+    // daily intake resets each new day
+    drunk = (s.date===todayKey()) ? (s.drunk||0) : 0;
+  }catch(e){/* storage blocked → fall back to in-memory */}
+}
+function saveState(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify({
+      date:todayKey(), drunk, lang,
+      weight:state.weight, act:state.act, heat:state.heat, shift:state.shift
+    }));
+  }catch(e){}
+}
 
 function compute(){
   let ml = state.weight*30 + ADD[state.act] + HEAT[state.heat] + Math.max(0,state.shift-8)*150;
@@ -433,6 +461,7 @@ function render(){
   if(ml) ml.textContent='250 ml'; if(mn) mn.textContent=interval+' min';
   // cups
   buildCups();
+  saveState();
 }
 
 function buildCups(){
@@ -480,24 +509,29 @@ function applyLang(){
 /* ---------------- wiring ---------------- */
 function bindRange(id,key,suffix){
   const el=document.getElementById(id);
+  el.value=state[key];
   const upd=()=>{
     state[key]=+el.value;
     document.getElementById(id==='weight'?'wval':'sval').textContent=el.value+suffix;
     const pct=(el.value-el.min)/(el.max-el.min)*100; el.style.setProperty('--p',pct+'%');
-    drunk=0; render();
+    render();
   };
   el.addEventListener('input',upd); upd();
 }
 function bindSeg(id,key){
   document.querySelectorAll('#'+id+' button').forEach(b=>{
+    b.classList.toggle('on', b.getAttribute('data-v')===state[key]);
     b.onclick=()=>{
       document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));
-      b.classList.add('on'); state[key]=b.getAttribute('data-v'); drunk=0; render();
+      b.classList.add('on'); state[key]=b.getAttribute('data-v'); render();
     };
   });
 }
 
+loadState();
+
 document.querySelectorAll('.lang button').forEach(b=>{
+  b.classList.toggle('on', b.getAttribute('data-lang')===lang);
   b.onclick=()=>{document.querySelectorAll('.lang button').forEach(x=>x.classList.remove('on'));b.classList.add('on');lang=b.getAttribute('data-lang');applyLang();};
 });
 document.getElementById('reset').onclick=()=>{drunk=0;render();};
